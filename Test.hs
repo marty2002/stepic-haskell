@@ -197,3 +197,12 @@ instance Printable Bool where
 
 instance Printable () where
 	toString () = "unit type"
+
+-- 2.3.9
+-- Сделайте тип пары представителем класса типов Printable, реализованного вами в предыдущей задаче, обеспечив следующее поведение:
+-- GHCi> toString (False,())
+-- "(false,unit type)"
+-- GHCi> toString (True,False)
+-- "(true,false)"
+instance (Printable a, Printable b) => Printable (a, b) where
+	toString (a, b) = "(" ++ toString a ++ "," ++ toString b ++ ")"
