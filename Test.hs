@@ -2,13 +2,21 @@ module Test where
 
 import Data.Function
 
-multSecond :: Num b => (a,b) -> (a,b) -> b
+{-multSecond :: Num b => (a,b) -> (a,b) -> b
 multSecond = g `on` h
 g :: Num b => b -> b  -> b
-g x y = * 
+g x y = x * y 
 h :: (a,b) -> b
-h p = snd 
+h p = snd p -}
 
 -- Реализуйте функцию on3, имеющую семантику, схожую с on, но принимающую в качестве первого аргумента трехместную функцию
 on3 :: (b -> b -> b -> c) -> (a -> b) -> a -> a -> a -> c
 on3 op f x y z = op (f x) (f y) (f z) 
+
+-- Функция одной переменной doItYourself выбирает наибольшее из переданного ей аргумента и числа 42, 
+-- затем возводит результат выбора в куб и, наконец, вычисляет логарифм по основанию 2 от полученного числа. Эта функция реализована в виде:
+
+doItYourself = f . g . h
+h = (max 42)
+g = (^3)
+f = (logBase 2)
