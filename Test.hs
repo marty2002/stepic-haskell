@@ -127,13 +127,17 @@ digs i | i < 0 = digs (-i)
 -- Реализуйте функцию, находящую значение определённого интеграла от заданной функции f на заданном интервале [a,b] методом трапеций. 
 -- (Используйте равномерную сетку; достаточно 1000 элементарных отрезков.)
 -- Результат может отличаться от -2.0, но не более чем на 1e-4.	    	  
--- !!! Я сделала неправильно, т.к. при 1000 шагов нужная точность не достигается
 integration :: (Double -> Double) -> Double -> Double -> Double
-integration f a b = h*sum where 
-	h = (b - a)/1000000
-	sum = s' 0 f 1000000
-	s' acc f n | n == 0 = acc + f (a + n*h)
-		  		 | otherwise = s' (acc + f (a + n*h)) f (n - 1) 
+integration f a b = h*( (f a + f b)/2 + sum) where 
+	h = (b - a)/1000
+	sum = s' 0 f 1
+	s' acc f n | n == 1000 = acc
+		  	   | otherwise = s' (acc + f (a + n*h)) f (n + 1) 
+-- Решение Кирилла, по моему, более логично
+intg f a b = let h = (b-a)/1000
+			 in h * ((f a + f b)/2 + helper 0 f a h 1)
+helper s f a h n | n == 1000 = s
+				 | otherwise = helper (s + f (a + n * h)) f a h (n + 1)
 
 -- 2.1.3		  		 
 -- Напишите функцию трех аргументов getSecondFrom, полиморфную по каждому из них, 
@@ -205,4 +209,31 @@ instance Printable () where
 -- GHCi> toString (True,False)
 -- "(true,false)"
 instance (Printable a, Printable b) => Printable (a, b) where
-	toString (a, b) = "(" ++ toString a ++ "," ++ toString b ++ ")"
+	toString (a, b) = "(" ++ toString a ++ "," ++ toString b ++ ")" 
+
+-- 2.4.3
+-- Пусть существуют два класса типов KnownToGork и KnownToMork, которые предоставляют 
+-- методы stomp (stab) и doesEnrageGork (doesEnrageMork) соответственно:
+class KnownToGork a where
+    stomp :: a -> a
+    doesEnrageGork :: a -> Bool
+class KnownToMork a where
+    stab :: a -> a
+    doesEnrageMork :: a -> Bool
+-- Класса типов KnownToGorkAndMork является расширением обоих этих классов, выставляя дополнительно метод stompOrStab:
+-- class (KnownToGork a, KnownToMork a) => KnownToGorkAndMork a where
+--    stompOrStab :: a -> a
+-- Задайте реализацию по умолчанию метода stompOrStab, которая вызывает метод stomp, 
+-- если переданное ему значение приводит в ярость Морка, вызывает stab, 
+-- если оно приводит в ярость Горка и вызывает сначала stab, а потом stomp, 
+-- если оно приводит в ярость их обоих. 
+-- Если не происходит ничего из вышеперечисленного, метод должен возвращать переданный ему аргумент.
+class (KnownToGork a, KnownToMork a) => KnownToGorkAndMork a where
+    stompOrStab :: a -> a
+    stompOrStab smth  = if doesEnrageMork smth && not (doesEnrageGork smth)
+    						then stomp smth
+    				   		else if doesEnrageGork smth && not (doesEnrageMork smth)
+    				   			then stab smth
+    				   			else if doesEnrageMork smth && doesEnrageGork smth 
+    				   				then  stomp $ stab smth
+    				   				else smth
