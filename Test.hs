@@ -237,3 +237,20 @@ class (KnownToGork a, KnownToMork a) => KnownToGorkAndMork a where
     				   			else if doesEnrageMork smth && doesEnrageGork smth 
     				   				then  stomp $ stab smth
     				   				else smth
+
+-- 2.4.5
+-- Имея функцию ip = show a ++ show b ++ show c ++ show d определите значения a, b, c, d так, чтобы добиться следующего поведения:
+-- GHCi> ip
+-- "127.224.120.12"
+{-class (Int x, Show x) => MyInt x where
+	show :: x -> [Char]
+	show x = "."-}
+--a, b, c :: MyInt 
+data MyIp = MyIp Int
+instance Show MyIp where
+  show (MyIp a) = show a ++ "."
+a = MyIp 127
+b = MyIp 224
+c = MyIp 120
+d = 12
+ip = show a ++ show b ++ show c ++ show d
