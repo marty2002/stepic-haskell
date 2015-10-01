@@ -277,5 +277,14 @@ class (Ord t, Enum t, Bounded t) => SafeEnum t where
   spred x = if x > minBound then pred x
   			else maxBound
 
-instance SafeEnum Bool where
+instance SafeEnum Bool where 
+
+-- 2.4.9
+-- Напишите функцию с сигнатурой типа
+-- avg :: Int -> Int -> Int -> Double
+-- вычисляющей среднее значение переданных в нее аргументов:
+-- GHCi> avg 3 4 5
+-- 4.0	
+avg :: Int -> Int -> Int -> Double
+avg x y z = fromIntegral (x + y + z) / 3
 
