@@ -288,3 +288,25 @@ instance SafeEnum Bool where
 avg :: Int -> Int -> Int -> Double
 avg x y z = fromIntegral (x + y + z) / 3
 
+-- 3.1.2
+-- Реализуйте функцию addTwoElements, которая бы добавляла два переданных ей значения в голову переданного списка.
+-- GHCi> addTwoElements 2 12 [85,0,6]
+-- [2,12,85,0,6]
+addTwoElements :: a -> a -> [a] -> [a]
+addTwoElements x y z = x : y : z 
+
+-- 3.1.3
+-- Реализуйте функцию nTimes, которая возвращает список, состоящий из повторяющихся значений ее первого аргумента. 
+-- Количество повторов определяется значением второго аргумента этой функции.
+-- GHCi> nTimes 42 3
+-- [42,42,42]
+-- GHCi> nTimes 'z' 5
+-- "zzzzz"
+nTimes:: a -> Int -> [a]
+nTimes x n = nTimes' x n []
+nTimes' :: a -> Int -> [a] -> [a]
+nTimes' x n acc | n == 0 = acc
+                | otherwise = nTimes' x (n-1) (x : acc)
+
+
+sndHead = snd . head
