@@ -308,5 +308,24 @@ nTimes' :: a -> Int -> [a] -> [a]
 nTimes' x n acc | n == 0 = acc
                 | otherwise = nTimes' x (n-1) (x : acc)
 
+-- 3.1.8
+-- Сформируйте список целых чисел, содержащий только те элементы исходного списка, значение которых нечетно.
+-- GHCi> oddsOnly [2,5,7,10,11,12]
+-- [5,7,11]
+-- Для анализа четности можно использовать функции odd и even стандартной библиотеки.
+oddsOnly :: Integral a => [a] -> [a]
+oddsOnly [] = []
+oddsOnly (x : xs) = if odd x then x : oddsOnly xs 
+                    else oddsOnly xs
 
-sndHead = snd . head
+
+-- 3.1.10
+-- Реализуйте функцию isPalindrome, которая определеяет, является ли переданный ей список палиндромом.
+-- GHCi> isPalindrome []
+-- True
+-- GHCi> isPalindrome [1]
+-- True
+-- GHCi> isPalindrome [1, 2]
+-- False
+isPalindrome :: Eq a => [a] -> Bool
+isPalindrome xs = xs == reverse xs
