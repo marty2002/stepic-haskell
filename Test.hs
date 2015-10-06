@@ -8,7 +8,7 @@ import Data.Char
 -- 1.2.7
 --Реализуйте функцию трех аргументов lenVec3, которая вычисляет длину трехмерного вектора. 
 -- Аргументы функции задают декартовы координаты конца вектора, его начало подразумевается находящимся в начале координат. 
-lenVec3 x y z =  sqrt (x^2 + y^2 + z^2)
+{-lenVec3 x y z =  sqrt (x^2 + y^2 + z^2)
 
 -- 1.2.10
 -- Напишите реализацию функции sign, которая возвращает 1, если ей передано положительное число, (-1), если отрицательное, и 0 в случае, когда передан 0.
@@ -329,3 +329,63 @@ oddsOnly (x : xs) = if odd x then x : oddsOnly xs
 -- False
 isPalindrome :: Eq a => [a] -> Bool
 isPalindrome xs = xs == reverse xs
+
+-- 3.1.12
+-- Составьте список сумм соответствующих элементов трех заданных списков. 
+-- Длина результирующего списка должна быть равна длине самого длинного из заданных списков, 
+-- при этом "закончившиеся" списки не должны давать вклада в суммы.
+-- GHCi> sum3 [1,2,3] [4,5] [6]
+-- [11,7,3]
+sum3 :: Num a => [a] -> [a] -> [a] -> [a]
+sum3 [] [] [] = []
+sum3 a [] [] = a
+sum3 [] b [] = b
+sum3 [] [] c = c
+sum3 [] (b : bs) (c : cs) = (b + c) : sum2 bs cs
+sum3 (a : as) [] (c : cs) = (a + c) : sum2 as cs
+sum3 (a : as) (b : bs) [] = (a + b) : sum2 as bs
+sum3 (a : as) (b : bs) (c : cs) = (a + b + c) : sum3 as bs cs
+
+sum2 :: Num a => [a] -> [a] -> [a]
+sum2 [] []  = []
+sum2 a [] = a
+sum2 [] b = b
+sum2 (a : as) (b : bs) = (a + b) : sum2 as bs
+
+
+-- Решение Кирилла, подумаю об этом позже
+{-sum3 :: Num a => [a] -> [a] -> [a] -> [a]
+sum3 [] [] [] = []
+sum3 [] [] (z:zs) = z : sum3 [] [] zs
+sum3 [] (y:ys) [] = y : sum3 [] ys []
+sum3 [] (y:ys) (z:zs) = (y+z) : sum3 [] ys zs
+
+sum3 (x:xs) [] [] = x : sum3 xs [] []
+sum3 (x:xs) [] (z:zs) = (x+z) : sum3 xs [] zs
+sum3 (x:xs) (y:ys) [] = (x+y) : sum3 xs ys []
+sum3 (x:xs) (y:ys) (z:zs) = (x+y+z) : sum3 xs ys zs -}
+-}
+-- 3.1.13
+-- Напишите функцию groupElems которая группирует одинаковые элементы в списке (если они идут подряд) 
+-- и возвращает список таких групп.
+-- GHCi> groupElems []
+-- []
+-- GHCi> groupElems [1,2]
+-- [[1],[2]]
+-- GHCi> groupElems [1,2,2,4]
+-- [[1],[2,2],[4]]
+-- GHCi> groupElems [1,2,3,2,4]
+-- [[1],[2],[3],[2],[4]]
+-- Разрешается использовать только функции, доступные из библиотеки Prelude.
+groupElems :: Eq a => [a] -> [[a]]
+groupElems [] = [
+groupElems a =  gr a []
+
+gr :: Eq a => [a] -> [[a]] -> [[a]]
+gr [] as = as
+gr (x : xs) [] = gr xs ((: x []) : [])
+gr (x : xs) ys = if (x == headOfLast ys) then gr xs ((: tail ys) : ys)
+                 else gr xs ((: x []) : ys)
+
+headOfLast = head . last
+
