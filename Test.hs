@@ -8,7 +8,7 @@ import Data.Char
 -- 1.2.7
 --Реализуйте функцию трех аргументов lenVec3, которая вычисляет длину трехмерного вектора. 
 -- Аргументы функции задают декартовы координаты конца вектора, его начало подразумевается находящимся в начале координат. 
-{-lenVec3 x y z =  sqrt (x^2 + y^2 + z^2)
+lenVec3 x y z =  sqrt (x^2 + y^2 + z^2)
 
 -- 1.2.10
 -- Напишите реализацию функции sign, которая возвращает 1, если ей передано положительное число, (-1), если отрицательное, и 0 в случае, когда передан 0.
@@ -364,7 +364,7 @@ sum3 (x:xs) [] [] = x : sum3 xs [] []
 sum3 (x:xs) [] (z:zs) = (x+z) : sum3 xs [] zs
 sum3 (x:xs) (y:ys) [] = (x+y) : sum3 xs ys []
 sum3 (x:xs) (y:ys) (z:zs) = (x+y+z) : sum3 xs ys zs -}
--}
+
 -- 3.1.13
 -- Напишите функцию groupElems которая группирует одинаковые элементы в списке (если они идут подряд) 
 -- и возвращает список таких групп.
@@ -378,14 +378,12 @@ sum3 (x:xs) (y:ys) (z:zs) = (x+y+z) : sum3 xs ys zs -}
 -- [[1],[2],[3],[2],[4]]
 -- Разрешается использовать только функции, доступные из библиотеки Prelude.
 groupElems :: Eq a => [a] -> [[a]]
-groupElems [] = [
-groupElems a =  gr a []
+groupElems [] = []
+groupElems a  =  gr a []
+  where gr [] as = reverse as
+        gr (x : xs) [] = gr xs ((x : []) : [])
+        gr (x : xs) ys = if (x == headOfHead ys) then gr xs ((x : (head ys)) : (tail ys)) 
+                         else gr xs ((x : []) : ys)
 
-gr :: Eq a => [a] -> [[a]] -> [[a]]
-gr [] as = as
-gr (x : xs) [] = gr xs ((: x []) : [])
-gr (x : xs) ys = if (x == headOfLast ys) then gr xs ((: tail ys) : ys)
-                 else gr xs ((: x []) : ys)
-
-headOfLast = head . last
+headOfHead = head . head
 
