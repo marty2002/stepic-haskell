@@ -4,11 +4,11 @@ module Test where
 import Data.Function
 -- 1.4.9
 import Data.Char 
-
+{--
 -- 1.2.7
 --Реализуйте функцию трех аргументов lenVec3, которая вычисляет длину трехмерного вектора. 
 -- Аргументы функции задают декартовы координаты конца вектора, его начало подразумевается находящимся в начале координат. 
-{-lenVec3 x y z =  sqrt (x^2 + y^2 + z^2)
+lenVec3 x y z =  sqrt (x^2 + y^2 + z^2)
 
 -- 1.2.10
 -- Напишите реализацию функции sign, которая возвращает 1, если ей передано положительное число, (-1), если отрицательное, и 0 в случае, когда передан 0.
@@ -133,6 +133,7 @@ integration f a b = h*( (f a + f b)/2 + sum) where
 	sum = s' 0 f 1
 	s' acc f n | n == 1000 = acc
 		  	   | otherwise = s' (acc + f (a + n*h)) f (n + 1) 
+
 -- Решение Кирилла, по моему, более логично
 intg f a b = let h = (b-a)/1000
 			 in h * ((f a + f b)/2 + helper 0 f a h 1)
@@ -406,7 +407,7 @@ readDigits xs = span isDigit xs
 filterDisj :: (a -> Bool) -> (a -> Bool) -> [a] -> [a]
 filterDisj _ _ [] = []
 filterDisj p1 p2 (x : xs) = if (p1 x || p2 x) then x : filterDisj p1 p2 xs
-                            else filterDisj p1 p2 xs-}
+                            else filterDisj p1 p2 xs
 
 -- 3.2.5
 -- Напишите реализацию функции qsort. 
@@ -426,3 +427,20 @@ qsort' :: Ord a => [a] -> [a] -> [a]
 qsort' [] (x : xs) = qsort' [x] xs
 qsort' fs ss = qsort fs ++ qsort ss
 
+-- 3.2.7 
+-- Напишите функцию squares'n'cubes, принимающую список чисел, 
+-- и возвращающую список квадратов и кубов элементов исходного списка.
+-- GHCi> squares'n'cubes [3,4,5]
+-- [9,27,16,64,25,125]
+squares'n'cubes :: Num a => [a] -> [a]
+squares'n'cubes a = concat map (^2) a ++ map (^3) a--}
+
+-- 3.2.10
+-- Реализуйте функцию delAllUpper, удаляющую из текста все слова, целиком состоящие из символов в верхнем регистре. 
+-- Предполагается, что текст состоит только из символов алфавита и пробелов, знаки пунктуации, цифры и т.п. отсутствуют.
+-- GHCi> delAllUpper "Abc IS not ABC"
+-- "Abc not"
+-- Постарайтесь реализовать эту функцию как цепочку композиций, аналогично revWords из предыдущего видео.
+delAllUpper :: String -> String
+delAllUpper str =  unwords (filter (any isLower) str1)
+  where str1 = words str
