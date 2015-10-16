@@ -433,7 +433,7 @@ qsort' fs ss = qsort fs ++ qsort ss
 -- GHCi> squares'n'cubes [3,4,5]
 -- [9,27,16,64,25,125]
 squares'n'cubes :: Num a => [a] -> [a]
-squares'n'cubes a = concat map (^2) a ++ map (^3) a--}
+squares'n'cubes a = concat map (^2) a ++ map (^3) a
 
 -- 3.2.10
 -- Реализуйте функцию delAllUpper, удаляющую из текста все слова, целиком состоящие из символов в верхнем регистре. 
@@ -444,3 +444,21 @@ squares'n'cubes a = concat map (^2) a ++ map (^3) a--}
 delAllUpper :: String -> String
 delAllUpper str =  unwords (filter (any isLower) str1)
   where str1 = words str
+
+
+-- 3.2.12
+-- Напишите функцию max3, которой передаются три списка чисел одинаковой длины
+-- и которая возвращает список чисел той же длины, содержащий на k-ой позиции
+-- наибольшее значение из чисел на этой позиции в списках-аргументах.
+-- GHCi> max3 [7,2,9] [3,6,8] [1,8,10]
+-- [7,8,10]
+max3 :: Ord a => [a] -> [a] -> [a] -> [a]
+max3 [] [] [] = []
+max3 (x:xs) (y:ys) (z:zs) = maximum [x, y, z] : max3 xs ys zs--}
+
+-- 3.3.3 
+-- Реализуйте c использованием функции zipWith функцию fibStream, возвращающую бесконечный список чисел Фибоначчи.
+-- GHCi> take 10 $ fibStream
+-- [0,1,1,2,3,5,8,13,21,34]
+fibStream :: [Integer]
+fibStream = [0,1] ++ zipWith (+) fibStream (tail fibStream)
